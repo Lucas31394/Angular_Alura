@@ -19,10 +19,10 @@ import agenda from './agenda.json'
   selector: 'app-root',
   standalone: true,
   imports: [
-    CommonModule, 
-    RouterOutlet, 
-    ContainerComponent, 
-    CabecalhoComponent, 
+    CommonModule,
+    RouterOutlet,
+    ContainerComponent,
+    CabecalhoComponent,
     SeparadorComponent,
     ContatoComponent,
     FormsModule
@@ -37,16 +37,23 @@ export class AppComponent {
 
   filtroPorTexto: string = ''
 
-  filtrarContatosPorTexto() : Contato[] {
+  normalizarString(texto: string): string {
+    return texto
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase();
+  }
+
+  filtrarContatosPorTexto(): Contato[] {
     return this.contatos.filter(contato => {
-      return contato.nome.toLowerCase().includes(this.filtroPorTexto.toLowerCase())
+      return this.normalizarString(contato.nome).includes(this.normalizarString(this.filtroPorTexto.toLowerCase()))
     })
   }
 
-  filtrarContatosPorLetra(letra: string) : Contato[] {
+  filtrarContatosPorLetra(letra: string): Contato[] {
     return this.filtrarContatosPorTexto().filter(contato => {
-        return contato.nome.toLowerCase().startsWith(letra)
-      }
+      return contato.nome.toLowerCase().startsWith(letra)
+    }
     )
   }
 }
