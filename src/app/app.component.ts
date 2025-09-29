@@ -52,7 +52,7 @@ export class AppComponent {
 
   filtrarContatosPorLetra(letra: string): Contato[] {
     return this.filtrarContatosPorTexto().filter(contato => {
-      return contato.nome.toLowerCase().startsWith(letra)
+      return this.normalizarString(contato.nome).startsWith(this.normalizarString(letra))
     }
     )
   }
